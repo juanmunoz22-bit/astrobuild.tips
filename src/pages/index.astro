@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+
+const allPosts = await Astro.glob('../content/*.md');
 ---
 
 <Layout title="Welcome to Astro.">
@@ -33,17 +37,18 @@ import Card from '../components/Card.astro';
 				</linearGradient>
 			</defs>
 		</svg>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
+		<Header title="Astrobuild.tips" />
+		<Hero />
 		<ul role="list" class="link-card-grid">
-			<Card
-				title="Hello Astro"
-				date="2023-12-12"
-				tags={["javascript"]}
-			/>
+			{
+				allPosts.map((item) => (
+					<Card
+						title={item?.frontmatter?.title}
+						date={item?.frontmatter?.pubDate}
+						tags={item?.frontmatter?.tags}
+					/>
+				))
+			}
 		</ul>
 	</main>
 </Layout>
@@ -84,7 +89,10 @@ import Card from '../components/Card.astro';
 	.instructions {
 		margin-bottom: 2rem;
 		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
+		background: linear-gradient(
+			rgba(var(--accent-dark), 66%),
+			rgba(var(--accent-dark), 33%)
+		);
 		padding: 1.5rem;
 		border-radius: 8px;
 	}
